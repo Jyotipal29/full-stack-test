@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { RELEASE_STEPS, STEP_COUNT, isValidStepId } from "@/lib/steps";
 import { computeStatus, type ReleaseStatus } from "@/lib/status";
 
-const typeDefs = /* GraphQL */ `
+const typeDefs = `
   enum ReleaseStatus {
     PLANNED
     ONGOING
@@ -185,7 +185,9 @@ export const schema = createSchema({
       },
       toggleStep: async (_: unknown, args: { releaseId: string; stepId: number }) => {
         if (!isValidStepId(args.stepId)) {
-          throw new GraphQLError(`Invalid step id (0–${STEP_COUNT - 1})`);
+          throw new GraphQLError(
+            `Invalid step id (must be 0-${STEP_COUNT - 1})`,
+          );
         }
         const existing = await prisma.release.findUnique({
           where: { id: args.releaseId },

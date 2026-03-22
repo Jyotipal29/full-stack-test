@@ -1,4 +1,3 @@
-/** Same steps for every release; IDs are stable array indices. */
 export const RELEASE_STEPS: readonly string[] = [
   "All relevant GitHub pull requests have been merged",
   "CHANGELOG.md files have been updated",

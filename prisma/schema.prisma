@@ -1,5 +1,3 @@
-// Release checklist — steps are global constants; each release stores which step IDs are done.
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
