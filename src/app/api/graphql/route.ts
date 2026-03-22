@@ -1,6 +1,8 @@
 import { createYoga } from "graphql-yoga";
 import { schema } from "@/graphql/schema";
 
+export const runtime = "nodejs";
+
 const yoga = createYoga({
   schema,
   graphqlEndpoint: "/api/graphql",

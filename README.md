@@ -53,6 +53,12 @@ curl -s -X POST http://localhost:3000/api/graphql \
 
 Table `Release`: `id` (text CUID), `name`, `date`, `additionalInfo`, `completedStepIds` (int array), `createdAt`, `updatedAt`. Step labels live in `src/lib/steps.ts`.
 
-## Deploy
+## Deploy (e.g. Vercel)
 
-Point `DATABASE_URL` at hosted Postgres (e.g. Neon), run `prisma migrate deploy` against it, then deploy the Next app (e.g. Vercel) with the same env var. Use a pooled connection string if the host recommends it.
+1. **Database** — Create Postgres (e.g. [Neon](https://neon.tech)). Use the **pooled** connection string in Vercel (`DATABASE_URL`). Hostnames contain `neon.tech` — the app then uses Neon's serverless driver + WebSockets (required on Vercel). Local Docker Postgres still uses `pg`.
+2. **Migrations** — Against that database, once:  
+   `DATABASE_URL="…your prod url…" npx prisma migrate deploy`
+3. **Vercel** — Import the repo, add env **`DATABASE_URL`** = same URL as step 2, then deploy. Redeploy after changing env vars.
+4. **If `/api/graphql` returned 500** — Usually missing/wrong `DATABASE_URL`, migrations not applied, or (fixed in code) Prisma client not reused in production. After pulling latest, redeploy.
+
+The GraphQL route runs on **Node.js** (`runtime = "nodejs"`), not Edge.
