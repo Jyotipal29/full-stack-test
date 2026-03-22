@@ -1,0 +1,20 @@
+// Release checklist — steps are global constants; each release stores which step IDs are done.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Release {
+  id               String   @id @default(cuid())
+  name             String
+  date             DateTime
+  additionalInfo   String?  @db.Text
+  completedStepIds Int[]    @default([])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
